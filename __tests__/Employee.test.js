@@ -15,13 +15,13 @@ test("Can set employee name to alice", () => {
 
 test("Can set employee ID to testValue", () => {
   const testValue = 100;
-  const employTest = new Employee("Foo", testValue);
+  const employTest = new Employee("tempVal", testValue);
   expect(employTest.id).toBe(testValue);
 });
 
 test("Can set email to be testValue", () => {
   const testValue = "test@test.com";
-  const employTest = new Employee("Foo", 1, testValue);
+  const employTest = new Employee("tempVal", 1, testValue);
   expect(employTest.email).toBe(testValue);
 });
 
@@ -33,13 +33,13 @@ test("Can get name from getName()", () => {
 
 test("Can get id from getId()", () => {
   const testValue = 100;
-  const employTest = new Employee("Foo", testValue);
+  const employTest = new Employee("tempVal", testValue);
   expect(employTest.getId()).toBe(testValue);
 });
 
 test("Can get email from getEmail()", () => {
   const testValue = "test@test.com";
-  const employTest = new Employee("Foo", 1, testValue);
+  const employTest = new Employee("tempVal", 1, testValue);
   expect(employTest.getEmail()).toBe(testValue);
 });
 
