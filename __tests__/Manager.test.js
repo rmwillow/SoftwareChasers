@@ -1,5 +1,4 @@
 const Manager = require('../lib/Manager.js');
-const Employee = require("../lib/Employee");
 
 test("getJobTitle() should return \"Manager\"", () => {
     const testValue = "Manager";
