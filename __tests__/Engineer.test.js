@@ -6,10 +6,10 @@ test("Can set up GitHub account from constructor", () => {
     expect(newEngineer.gitHub).toBe(testValue);
 });
 
-test("getJobTitle() should return \"Engineer\"", () => {
+test("getRole() should return \"Engineer\"", () => {
     const testValue = "Engineer";
     const newEngineer = new Engineer("tempVal", 1, "test@gmail.com", "gitHubUser");
-    expect(newEngineer.getJobTitle()).toBe(testValue);
+    expect(newEngineer.getRole()).toBe(testValue);
   });
 
   test("Can get GitHub username from getGithub()", () => {

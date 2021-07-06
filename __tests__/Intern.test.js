@@ -6,10 +6,10 @@ test("Can set school object from constructor", () => {
     expect(newIntern.school).toBe(testValue);
   });
 
-  test("getJobTitle() should return \"Intern\"", () => {
+  test("getRole() should return \"Intern\"", () => {
     const testValue = "Intern";
     const newIntern = new Intern("tempVal", 1, "test@gmail.com", "UT");
-    expect(newIntern.getJobTitle()).toBe(testValue);
+    expect(newIntern.getRole()).toBe(testValue);
   });
   
 
