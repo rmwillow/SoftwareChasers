@@ -5,3 +5,10 @@ test("Can set up GitHub account from constructor", () => {
     const newEngineer = new Engineer("tempVal", 1, "test@gmail.com", testValue);
     expect(newEngineer.gitHub).toBe(testValue);
 });
+
+test("getJobTitle() should return \"Engineer\"", () => {
+    const testValue = "Engineer";
+    const newEngineer = new Engineer("tempVal", 1, "test@test.com", "GitHubUser");
+    expect(newEngineer.getJobTitle()).toBe(testValue);
+  });
+  
