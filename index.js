@@ -42,7 +42,9 @@ function promptUser(answers) {
                     message: "What is your email?"
                 }
            
-            }
+            ])
+        }
+    });
 //use switch case for if the user chooses engineer, intern or manager
 //create user prompt for each role
 
