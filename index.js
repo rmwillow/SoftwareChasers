@@ -13,6 +13,9 @@ let roleArray = [];
 
 
 //create prompt user function with inquirer & question choices
+
+//use switch case for if the user chooses engineer, intern or manager
+//create user prompt for each role
 function promptUser(answers) {
     return inquirer.prompt([
         {
@@ -21,10 +24,9 @@ function promptUser(answers) {
             message: "what is your role?",
             choices: ["Engineer", "Intern", "Manager"]
         },
-    ]).then(function (res) {
-        // should use switch case instead of if/else starting here
-        console.log(res)
-        if (res.role === "Engineer") {
+    ]).then(function (title) {
+        console.log(title)
+        if (role.role === "Engineer") {
             inquirer.prompt([
                 {
                     name: "name",
@@ -41,9 +43,17 @@ function promptUser(answers) {
                     type: "input",
                     message: "What is your email?"
                 }
-           
-            ])
-        } else if (res.role === "Intern") {
+                //push answers to team array for each job resolve
+            ]).then(function (engineerTitle) {
+                var newEngineer = new Engineer(engineerTitle.name, engineerTitle.email, uniqueId, engineerTitle.github);
+                uniqueId = uniqueId++;
+                console.log(newEngineer);
+                teamArray.push(newEngineer);
+                addUser();
+                
+            });
+
+        } else if (title.role === "Intern") {
             inquirer.prompt([
                 {
                     name: "name",
@@ -60,9 +70,15 @@ function promptUser(answers) {
                     type: "input",
                     message: "Where did you graduate from college?"
                 }
-            ])
-        }
-        else if (res.role === "Manager") {
+                //push answers to team array for each job resolve
+            ]).then(function (internTitle) {
+                var newIntern = new Intern(internTitle.name, internTitle.email, uniqueId, internTitle.school);
+                uniqueId = uniqueId++;
+                console.log(newIntern)
+                teamArray.push(newIntern);
+                addUser();
+            });
+        } else if (title.role === "Manager") {
             inquirer.prompt([
                 {
                     name: "name",
@@ -79,15 +95,26 @@ function promptUser(answers) {
                     type: "input",
                     message: "What is your office number?"
                 }
-            ])
-        }
-    });
+                //push answers to team array for each job resolve
+            ]).then(function (managerTitle) {
+                var newManager = new Manager(managerTitle.name, managerTitle.email, uniqueId, managerTitle.office);
+                uniqueId = uniqueId++; 
+                console.log(newManager);
+                teamArray.push(newManager);
+                addUser();
+            });
+        };
 
-//use switch case for if the user chooses engineer, intern or manager
-//create user prompt for each role
+    })
+        .catch(function (err) {
+            console.log(err);
+        });
+
+};
 
 
-//push answers to team array for each job resolve
+
+
 
 //generate HTML 
 
