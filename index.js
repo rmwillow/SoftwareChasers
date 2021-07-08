@@ -62,6 +62,25 @@ function promptUser(answers) {
                 }
             ])
         }
+        else if (res.role === "Manager") {
+            inquirer.prompt([
+                {
+                    name: "name",
+                    message: "What is your name?",
+                    type: "input"
+                },
+                {
+                    name: "email",
+                    type: "input",
+                    message: "What is your email?"
+                },
+                {
+                    name: "office",
+                    type: "input",
+                    message: "What is your office number?"
+                }
+            ])
+        }
     });
 
 //use switch case for if the user chooses engineer, intern or manager
