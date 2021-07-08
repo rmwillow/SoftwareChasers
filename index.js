@@ -3,9 +3,14 @@ const inquirer = require("inquirer");
 //import jest
 const jest = require("jest");
 //require Engineer, intern, manager
-const Engineer = require("./lib/engineer.js");
-const Intern = require("./lib/intern.js");
-const Manager = require("./lib/manager.js");
+const Engineer = require("./lib/Engineer.js");
+const Intern = require("./lib/Intern.js");
+const Manager = require("./lib/Manager.js");
+//write to html pageDisplay
+const fs = require('fs');
+const util = require("util");
+const generateHTML = require("./utils/generateMarkdown.js")
+const writeFileAsync = util.promisify(fs.writeFile);
 //create a role id of 0
 let roleId = 0;
 //create empty array
@@ -16,17 +21,17 @@ let roleArray = [];
 
 //use switch case for if the user chooses engineer, intern or manager
 //create user prompt for each role
-function promptUser(answers) {
+const promptUser = () => {
     return inquirer.prompt([
         {
             type: "list",
             name: "role",
             message: "what is your role?",
-            choices: ["Engineer", "Intern", "Manager"]
+            choices: [{ name: "Engineer"}, { name: "Intern"},{ name: "Manager"}]
         },
     ]).then(function (title) {
         console.log(title)
-        if (role.role === "Engineer") {
+        if (title.role === "Engineer") {
             inquirer.prompt([
                 {
                     name: "name",
@@ -45,10 +50,10 @@ function promptUser(answers) {
                 }
                 //push answers to team array for each job resolve
             ]).then(function (engineerTitle) {
-                var newEngineer = new Engineer(engineerTitle.name, engineerTitle.email, uniqueId, engineerTitle.github);
-                uniqueId = uniqueId++;
+                var newEngineer = new Engineer(engineerTitle.name, engineerTitle.email, roleId, engineerTitle.github);
+                roleId = roleId++;
                 console.log(newEngineer);
-                teamArray.push(newEngineer);
+                roleArray.push(newEngineer);
                 addUser();
                 
             });
@@ -72,10 +77,10 @@ function promptUser(answers) {
                 }
                 //push answers to team array for each job resolve
             ]).then(function (internTitle) {
-                var newIntern = new Intern(internTitle.name, internTitle.email, uniqueId, internTitle.school);
-                uniqueId = uniqueId++;
+                var newIntern = new Intern(internTitle.name, internTitle.email, roleId, internTitle.school);
+                roleId = roleId++;
                 console.log(newIntern)
-                teamArray.push(newIntern);
+                roleArray.push(newIntern);
                 addUser();
             });
         } else if (title.role === "Manager") {
@@ -97,25 +102,41 @@ function promptUser(answers) {
                 }
                 //push answers to team array for each job resolve
             ]).then(function (managerTitle) {
-                var newManager = new Manager(managerTitle.name, managerTitle.email, uniqueId, managerTitle.office);
-                uniqueId = uniqueId++; 
+                var newManager = new Manager(managerTitle.name, managerTitle.email, roleId, managerTitle.office);
+                roleId = roleId++; 
                 console.log(newManager);
-                teamArray.push(newManager);
+                roleArray.push(newManager);
                 addUser();
             });
         };
 
     })
-        .catch(function (err) {
-            console.log(err);
-        });
-
+    
 };
 
 
+    function addUser(){
+        inquirer.prompt([
+            {   
+                name: "continue",
+                message: "Do you want to add another team member?",
+                type: "confirm"
+            }
+        ]).then(function(confirmRes){
+            confirmRes.continue && promptUser()
+        })
+    };
 
 
-
-//generate HTML 
-
+    async function generate() {
+        // Ask user questions and generate responses
+        const answers = await promptUser();
+        console.log(answers)
+        const generateContent = generateHTML(answers);
+        // Write new README.md to dist directory
+        await writeFileAsync('./dist/index.html', generateContent, function (err, result) {
+    
+        });
+}
+generate();
 
