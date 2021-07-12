@@ -130,9 +130,9 @@ const promptUser = () => {
 
     async function generate() {
         // Ask user questions and generate responses
-        const answers = await promptUser();
-        console.log(answers)
-        const generateContent = generateHTML(answers);
+        const roleArray = await promptUser();
+        console.log(roleArray)
+        const generateContent = generateHTML(roleArray);
         // Write new README.md to dist directory
         await writeFileAsync('./dist/index.html', generateContent, function (err, result) {
     
