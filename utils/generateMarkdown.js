@@ -1,14 +1,9 @@
-function generateHTML(roleArray) {
+function generateHTML(answer) {
     return `
-
-## Description 
-blh dsdgfxgcvn ${roleArray}
+<h1 align="center">${answer}</h1>title goe shere</h1>
+  
 <br />
-<br />
-<br />
-<br />
-<br />
-    `;
+`;
 }
 
 
