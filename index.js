@@ -1,139 +1,172 @@
-//import inquirer
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
-//import jest
-const jest = require("jest");
-//require Engineer, intern, manager
-const Engineer = require("./lib/Engineer.js");
-const Intern = require("./lib/Intern.js");
-const Manager = require("./lib/Manager.js");
-//write to html pageDisplay
-const fs = require('fs');
-const util = require("util");
-const generateHTML = require("./utils/generateMarkdown.js")
-const writeFileAsync = util.promisify(fs.writeFile);
-//create a role id of 0
-let roleId = 0;
-//create empty array
-let roleArray = [];
+const path = require("path");
+const fs = require("fs");
 
+const OUTPUT_DIR = path.resolve(__dirname, "output");
+const outputPath = path.join(OUTPUT_DIR, "team.html");
 
-//create prompt user function with inquirer & question choices
+const render = require("./lib/htmlRenderer");
 
-//use switch case for if the user chooses engineer, intern or manager
-//create user prompt for each role
-const promptUser = () => {
-    return inquirer.prompt([
-        {
-            type: "list",
-            name: "role",
-            message: "what is your role?",
-            choices: ["Engineer", "Intern","Manager"]
-        },
-    ]).then(function (title) {
-        console.log(title)
-        if (title.role === "Engineer") {
-            inquirer.prompt([
-                {
-                    name: "name",
-                    message: "What is your name?",
-                    type: "input"
-                },
-                {
-                    name: "github",
-                    type: "input",
-                    message: "What is your github Username?"
-                },
-                {
-                    name: "email",
-                    type: "input",
-                    message: "What is your email?"
-                }
-                //push answers to team array for each job resolve
-            ]).then(function (engineerTitle) {
-              console.log(engineerTitle.name);
-                var newEngineer = new Engineer(engineerTitle.name, engineerTitle.email, roleId, engineerTitle.github);
-                roleId = roleId++;
-                console.log(newEngineer);
-                addUser();
-                
-            });
+let team = [];
 
-        } else if (title.role === "Intern") {
-            inquirer.prompt([
-                {
-                    name: "name",
-                    message: "What is your name?",
-                    type: "input"
-                },
-                {
-                    name: "email",
-                    type: "input",
-                    message: "What is your email?"
-                },
-                {
-                    name: "school",
-                    type: "input",
-                    message: "Where did you graduate from college?"
-                }
-                //push answers to team array for each job resolve
-            ]).then(function (internTitle) {
-                var newIntern = new Intern(internTitle.name, internTitle.email, roleId, internTitle.school);
-                roleId = roleId++;
-                console.log(newIntern)
-                addUser();
-            });
-        } else if (title.role === "Manager") {
-            return inquirer.prompt([
-                {
-                    name: "name",
-                    message: "What is your name?",
-                    type: "input"
-                },
-                {
-                    name: "email",
-                    type: "input",
-                    message: "What is your email?"
-                },
-                {
-                    name: "office",
-                    type: "input",
-                    message: "What is your office number?"
-                }
-                //push answers to team array for each job resolve
-            ]).then(function (managerTitle) {
-                var newManager = new Manager(managerTitle.name, managerTitle.email, roleId, managerTitle.office);
-                roleId = roleId++; 
-                console.log(newManager);
-                addUser();
-                return newManager;
-            });
-        };
-
-    })
-    
-};
-
-
-    function addUser(){
-        inquirer.prompt([
-            {   
-                name: "continue",
-                message: "Do you want to add another team member?",
-                type: "confirm"
-            }
-        ]).then(function(confirmRes){
-            confirmRes.continue && promptUser()
-        })
-    };
-
-
-    async function generate() {
-
-        // Ask user questions and generate responses
-        const answer = await promptUser();
-        const generateContent = generateHTML(answer);
-        // Write new README.md to dist directory
-        await writeFileAsync('./dist/index.html', generateContent, function (err, result) {
-        });
+function NewEmployee() {
+  console.log("Build your team!");
+  return inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "employee",
+        message: "Which team member would you like to add?",
+        choices: [
+          "Manager",
+          "Engineer",
+          "Intern",
+          "No more team members to add",
+        ],
+      },
+    ])
+    .then((answers) => {
+      switch (answers.employee) {
+        case "Manager":
+          AddManager();
+          break;
+        case "Engineer":
+          AddEngineer();
+          break;
+        case "Intern":
+          AddIntern();
+          break;
+        case "No more team members to add":
+          render(team);
+          GenerateHTML();
+      }
+    });
 }
-generate();
+
+function AddManager() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "What is your manager's name?",
+      },
+      {
+        type: "input",
+        name: "id",
+        message: "What is your manager's ID?",
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "What is your manager's email?",
+      },
+      {
+        type: "input",
+        name: "officeNumber",
+        message: "What is your manager's office number?",
+      },
+    ])
+
+    .then((answers) => {
+      const manager = new Manager(
+        answers.name,
+        answers.id,
+        answers.email,
+        answers.officeNumber
+      );
+      team.push(manager);
+      NewEmployee();
+    });
+}
+
+function AddEngineer() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "What is your engineer's name?",
+      },
+      {
+        type: "input",
+        name: "id",
+        message: "What is your engineer's ID?",
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "What is your engineer's email?",
+      },
+      {
+        type: "input",
+        name: "github",
+        message: "What is your engineer's Github username?",
+      },
+    ])
+
+    .then((answers) => {
+      const engineer = new Engineer(
+        answers.name,
+        answers.id,
+        answers.email,
+        answers.github
+      );
+      team.push(engineer);
+      NewEmployee();
+    });
+}
+
+function AddIntern() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "What is your intern's name?",
+      },
+      {
+        type: "input",
+        name: "id",
+        message: "What is your intern's ID?",
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "What is your intern's email?",
+      },
+      {
+        type: "input",
+        name: "school",
+        message: "What school does your intern attend?",
+      },
+    ])
+
+    .then((answers) => {
+      const intern = new Intern(
+        answers.name,
+        answers.id,
+        answers.email,
+        answers.school
+      );
+      team.push(intern);
+      NewEmployee();
+    });
+}
+
+function GenerateHTML() {
+  if (!fs.existsSync(OUTPUT_DIR)) {
+    fs.mkdirSync(OUTPUT_DIR);
+  }
+  fs.writeFile(outputPath, render(team), function (err) {
+    if (err) throw err;
+    console.log(
+      "Your HTML has been generated and loaded into the output folder!"
+    );
+  });
+}
+
+NewEmployee();
