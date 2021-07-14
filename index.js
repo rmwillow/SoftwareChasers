@@ -27,7 +27,7 @@ const promptUser = () => {
             type: "list",
             name: "role",
             message: "what is your role?",
-            choices: [{ name: "Engineer"}, { name: "Intern"},{ name: "Manager"}]
+            choices: ["Engineer", "Intern","Manager"]
         },
     ]).then(function (title) {
         console.log(title)
@@ -50,10 +50,10 @@ const promptUser = () => {
                 }
                 //push answers to team array for each job resolve
             ]).then(function (engineerTitle) {
+              console.log(engineerTitle.name);
                 var newEngineer = new Engineer(engineerTitle.name, engineerTitle.email, roleId, engineerTitle.github);
                 roleId = roleId++;
                 console.log(newEngineer);
-                roleArray.push(newEngineer);
                 addUser();
                 
             });
@@ -80,7 +80,6 @@ const promptUser = () => {
                 var newIntern = new Intern(internTitle.name, internTitle.email, roleId, internTitle.school);
                 roleId = roleId++;
                 console.log(newIntern)
-                roleArray.push(newIntern);
                 addUser();
             });
         } else if (title.role === "Manager") {
@@ -105,7 +104,6 @@ const promptUser = () => {
                 var newManager = new Manager(managerTitle.name, managerTitle.email, roleId, managerTitle.office);
                 roleId = roleId++; 
                 console.log(newManager);
-                roleArray.push(newManager);
                 addUser();
                 return newManager;
             });
@@ -130,13 +128,12 @@ const promptUser = () => {
 
 
     async function generate() {
+
         // Ask user questions and generate responses
-        const roleArray = await promptUser();
-        console.log(roleArray)
-        const generateContent = generateHTML(roleArray);
+        const answer = await promptUser();
+        const generateContent = generateHTML(answer);
         // Write new README.md to dist directory
         await writeFileAsync('./dist/index.html', generateContent, function (err, result) {
-    
         });
 }
 generate();
