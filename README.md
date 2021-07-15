@@ -10,7 +10,8 @@ https://user-images.githubusercontent.com/52016382/125708051-bb0855f0-ff2d-4f84-
 
 
 ### Check out our test files
-![Tests](https://user-images.githubusercontent.com/52016382/125707026-b0347f3a-99ca-4664-9972-a55983669999.png)
+![tests](https://user-images.githubusercontent.com/52016382/125708396-412065fb-7e7a-4051-8258-c93f8e4c3bb1.png)
+
 
 ### Example Page output
 ![Homepage](https://user-images.githubusercontent.com/52016382/125707038-fceca8f6-b202-4880-9ed4-7dfdb3b4bf51.png)
