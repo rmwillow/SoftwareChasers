@@ -2,6 +2,7 @@
 
 
 ## Instructions
+> Install NPM & npm packages Inquierer and Jest for testing before deploying
 
 Software Chasers application will prompt the user for information about the team manager and then information about the team members. The user can then input any number of team members, and they may be a mix of engineers and interns. This assignment must also pass all unit tests. When the user has completed building the team, the application will create an HTML file that displays a nicely formatted team.
 
